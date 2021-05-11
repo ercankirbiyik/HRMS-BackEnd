@@ -1,2 +1,2 @@
-# HRMS / Human-Resourse-Management-System
+# HRMS / Human-Resource-Management-System
 # PostgreSQL 
