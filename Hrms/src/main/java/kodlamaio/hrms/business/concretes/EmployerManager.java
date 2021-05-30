@@ -70,7 +70,7 @@ public class EmployerManager implements EmployerService {
 			return false;
 		}
 		return true;
-	}
+	} 
 	
 	private boolean isRealEmployer(Employer employer) {
 		 String regex = "^(.+)@(.+)$";
