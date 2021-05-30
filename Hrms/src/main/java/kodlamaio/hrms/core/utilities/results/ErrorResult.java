@@ -10,4 +10,4 @@ public class ErrorResult extends Result {
 		super(false, message);
 	}
 
-}
+} 

@@ -29,7 +29,7 @@ public class JobTitleManager implements JobTitleService {
 	public DataResult<List<JobTitle>> getAll() {
 		return new SuccessDataResult<List<JobTitle>>(jobTitleDao.findAll(),"Successfully listed");
 	}
-
+ 
 	@Override
 	public DataResult<List<JobTitle>> findJobTitles(String title) {
 		return new SuccessDataResult<List<JobTitle>>(this.jobTitleDao.findJobTitles(title), "Successfully listed");

@@ -133,4 +133,4 @@ public class CandidateManager implements CandidateService {
 		return new SuccessDataResult<List<Candidate>>(this.candidateDao.findAll(),"Job seekers successfully added");
 	}
 
-}
+} 

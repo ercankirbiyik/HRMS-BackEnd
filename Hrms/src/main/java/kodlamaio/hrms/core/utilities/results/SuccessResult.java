@@ -12,3 +12,4 @@ public class SuccessResult extends Result {
 	}
 
 }
+ 

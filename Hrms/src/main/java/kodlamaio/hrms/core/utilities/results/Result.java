@@ -15,7 +15,7 @@ public class Result {
 		this.message = message;
 		
 	}
-	
+	 
 	public boolean isSuccess() {
 		return this.success;
 	}

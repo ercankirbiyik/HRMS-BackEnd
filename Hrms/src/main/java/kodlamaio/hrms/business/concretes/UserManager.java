@@ -25,7 +25,7 @@ public class UserManager implements UserService {
 	public DataResult<List<User>> getAll() {
 	       return new SuccessDataResult<List<User>>(userDao.findAll(),"Users successfully listed.");
 	}
-
+ 
 	@Override
 	public User add(User user) {
 		return userDao.save(user);

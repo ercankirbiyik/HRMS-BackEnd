@@ -21,7 +21,7 @@ public class EmailVerificationManager implements EmailVerificationService {
 			super();
 			this.emailVerificationDao = emailVerificationDao;
 		}
-
+ 
 	    @Override
 		public void generateCode(EmailVerification code,Integer id) {
 					EmailVerification code_ = code;

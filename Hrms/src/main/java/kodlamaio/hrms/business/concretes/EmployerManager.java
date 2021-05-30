@@ -77,7 +77,7 @@ public class EmployerManager implements EmployerService {
 	     Pattern pattern = Pattern.compile(regex);
 	     Matcher matcher = pattern.matcher(employer.getEmail());
 	     if(!matcher.matches()) {
-	    	 return false;
+	    	 return false; 
 	     }
 	     else if(!employer.getEmail().contains(employer.getWebAddress())) {
 	    	return false; 

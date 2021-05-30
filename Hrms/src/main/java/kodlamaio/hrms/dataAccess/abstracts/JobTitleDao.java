@@ -24,3 +24,4 @@ public interface JobTitleDao extends JpaRepository<JobTitle, Integer> {
 	List<JobTitle> findAllByTitle(String title);
 
 }
+ 

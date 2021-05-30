@@ -9,4 +9,4 @@ import kodlamaio.hrms.entities.concretes.EmailVerification;
 public interface EmailVerificationDao extends JpaRepository<EmailVerification, Integer> {
 	List<EmailVerification> findByUserId(Integer userId);
 
-}
+} 

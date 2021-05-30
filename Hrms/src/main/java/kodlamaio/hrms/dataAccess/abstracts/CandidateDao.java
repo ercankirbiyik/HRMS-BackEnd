@@ -10,4 +10,4 @@ public interface CandidateDao extends JpaRepository<Candidate, Integer> {
 	List<Candidate> findAllByEmail(String email);
 	List<Candidate> findAllByIdentificationNumber(String identificationNumber);
 
-}
+} 
