@@ -1,5 +1,5 @@
 package kodlamaio.hrms.business.concretes;
-
+ 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,13 +7,19 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import kodlamaio.hrms.business.abstracts.CandidateService;
 import kodlamaio.hrms.business.abstracts.EmailVerificationService;
 import kodlamaio.hrms.business.abstracts.UserService;
+import kodlamaio.hrms.business.constants.CallBackMessages;
 import kodlamaio.hrms.core.utilities.IdentityValidation;
+import kodlamaio.hrms.core.utilities.business.BusinessEngine;
 import kodlamaio.hrms.core.utilities.results.DataResult;
 import kodlamaio.hrms.core.utilities.results.ErrorDataResult;
+import kodlamaio.hrms.core.utilities.results.ErrorResult;
+import kodlamaio.hrms.core.utilities.results.Result;
 import kodlamaio.hrms.core.utilities.results.SuccessDataResult;
+import kodlamaio.hrms.core.utilities.results.SuccessResult;
 import kodlamaio.hrms.dataAccess.abstracts.CandidateDao;
 import kodlamaio.hrms.entities.concretes.Candidate;
 import kodlamaio.hrms.entities.concretes.EmailVerification;
@@ -29,7 +35,8 @@ public class CandidateManager implements CandidateService {
 	private EmailVerificationService emailVerificationService;
 	private UserService userService;
 	
-	public CandidateManager(CandidateDao candidateDao, EmailVerificationService emailVerificationService, UserService userService) {
+
+	public CandidateManager(CandidateDao candidateDao,EmailVerificationService emailVerificationService,UserService userService) {
 		super();
 		this.candidateDao = candidateDao;
 		this.emailVerificationService = emailVerificationService;
@@ -38,99 +45,98 @@ public class CandidateManager implements CandidateService {
 
 	@Override
 	public DataResult<Candidate> add(Candidate candidate) {
-		if(!firstNameChecker(candidate)) {
-			return new ErrorDataResult<Candidate>(null,"First name is mandatory!");
-		}
-		else if(!lastNameChecker(candidate)) {
-			return new ErrorDataResult<Candidate>(null,"Last name is mandatory!");
-		}
-		
-		else if(!IdentityValidation.isRealPerson(candidate.getIdentificationNumber())) {
-			return new ErrorDataResult<Candidate>(null,"Could Not Authenticate!");
-		}
-		else if(candidate.getIdentificationNumber().isBlank()) {
-			return new ErrorDataResult<Candidate>(null,"Identity Information cannot be left blank!");
-		}
-		
-		else if(!birthDateChecker(candidate)) {
-			return new ErrorDataResult<Candidate>(null,"Date of birth is mandatory!");
+		Result engine = BusinessEngine.run(firstNameChecker(candidate),lastNameChecker(candidate),
+				IdentityValidation.isRealPerson(candidate.getIdentificationNumber()),
+				IdChecker(candidate),
+				birthDateChecker(candidate),
+				emailNullChecker(candidate),
+				isRealEmail(candidate),
+				passwordNullChecker(candidate),
+				isMailRegistered(candidate)
+				);
+		if(!engine.isSuccess()) {
+			return new ErrorDataResult(null,engine.getMessage());
 		}
 		
-		else if(!emailNullChecker(candidate)) {
-			return new ErrorDataResult<Candidate>(null,"Email address is mandatory!");
-		}
-		else if(!isRealEmail(candidate)) {
-			return new ErrorDataResult<Candidate>(null,"Email address entered incorrectly!");
-		}
-		
-		else if(!passwordNullChecker(candidate)) {
-			return new ErrorDataResult<Candidate>(null,"Password is mandatory!");
-		}
-		
-		else if(candidateDao.findAllByEmail(candidate.getEmail()).stream().count() != 0 ) {
-			return new ErrorDataResult<Candidate>(null,"This email is already registered!");
-		}
-		else if(candidateDao.findAllByIdentificationNumber(candidate.getIdentificationNumber()).stream().count() != 0 ) {
-			return new ErrorDataResult<Candidate>(null,"This identification number is already registered!");
-		}
 		User savedUser = this.userService.add(candidate);
 		this.emailVerificationService.generateCode(new EmailVerification(),savedUser.getId());
-		return new SuccessDataResult<Candidate>(this.candidateDao.save(candidate),"Job seeker account added, verification code has been sent : " + candidate.getId());
-		
-		
+		return new SuccessDataResult<Candidate>(this.candidateDao.save(candidate),CallBackMessages.isRegisterSuccessForCandidateMessage);
+				
 	}
 	
-	private boolean firstNameChecker(Candidate candidate) {
+	private Result firstNameChecker(Candidate candidate) {
 		if(candidate.getFirstName().isBlank() || candidate.getFirstName().equals(null)) {
-			return false;
+			return new ErrorResult(CallBackMessages.requiredFirstName);
+			
 		}
-		return true;
+		return new SuccessResult();
 	}
 	
-	private boolean lastNameChecker(Candidate candidate) {
+	private Result lastNameChecker(Candidate candidate) {
 		if(candidate.getLastName().isBlank() || candidate.getLastName().equals(null)) {
-			return false;
+			return new ErrorResult(CallBackMessages.requiredLastName);
 		}
-		return true;
+		return new SuccessResult();
 	}
 	
-	private boolean birthDateChecker(Candidate candidate) {
+	private Result birthDateChecker(Candidate candidate) {
 		if(candidate.getBirthDate().equals(null)) {
-			return false;
+			return new ErrorResult(CallBackMessages.requiredBirthDate);
 		}
-		return true;
+		return new SuccessResult();
 	}
 	
-	private boolean emailNullChecker(Candidate candidate) {
+	private Result emailNullChecker(Candidate candidate) {
 		if(candidate.getEmail().isBlank() || candidate.getEmail().equals(null)) {
-			return false;
+			return new ErrorResult(CallBackMessages.requiredEmail);
 		}
-		return true;
+		return new SuccessResult();
 	}
 	
-	private boolean passwordNullChecker(Candidate candidate) {
+	private Result passwordNullChecker(Candidate candidate) {
 		if(candidate.getPassword().isBlank() || candidate.getPassword().equals(null)) {
-			return false;
+			return new ErrorResult(CallBackMessages.requiredPassword);
 		}
-		return true;
+		return new SuccessResult();
 	}
 	
-	private boolean isRealEmail(Candidate candidate) {
+	private Result isRealEmail(Candidate candidate) {
 		 String regex = "^(.+)@(.+)$";
 	     Pattern pattern = Pattern.compile(regex);
 	     Matcher matcher = pattern.matcher(candidate.getEmail());
 	     if(!matcher.matches()) {
-	    	 return false;
+	    		return new ErrorResult(CallBackMessages.isRealMail);
 	     }
-	     return true;
+	     return new SuccessResult();
 	     
+	}
+	
+	private Result IdChecker(Candidate candidate) {
+		if(candidate.getIdentificationNumber().isBlank()) {
+			return new ErrorResult(CallBackMessages.requiredId);
+		}
+		
+		 return new SuccessResult();
+	}
+	
+	private Result isMailRegistered(Candidate candidate) {
+		if(candidateDao.findAllByEmail(candidate.getEmail()).stream().count() != 0) {
+			return new ErrorResult(CallBackMessages.alreadyRegisteredMail);
+		}
+		 return new SuccessResult();
+	}
+	
+	private Result isIdRegistered(Candidate candidate) {
+		if(candidateDao.findAllByIdentificationNumber(candidate.getIdentificationNumber()).stream().count() != 0 ) {
+			return new ErrorResult(CallBackMessages.alreadyRegisteredId);
+		}
+		 return new SuccessResult();
 	}
 	
 
 
 	@Override
 	public DataResult<List<Candidate>> getAll() {
-		return new SuccessDataResult<List<Candidate>>(this.candidateDao.findAll(),"Job seekers successfully added");
+		return new SuccessDataResult<List<Candidate>>(this.candidateDao.findAll(),CallBackMessages.listedCandidates);
 	}
-
 } 

@@ -1,7 +1,5 @@
 package kodlamaio.hrms.dataAccess.abstracts;
 
-
-
 import java.util.List;
 import java.util.Optional;
 

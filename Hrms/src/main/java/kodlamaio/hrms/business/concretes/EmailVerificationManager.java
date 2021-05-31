@@ -10,7 +10,7 @@ import kodlamaio.hrms.core.utilities.results.Result;
 import kodlamaio.hrms.core.utilities.results.SuccessDataResult;
 import kodlamaio.hrms.dataAccess.abstracts.EmailVerificationDao;
 import kodlamaio.hrms.entities.concretes.EmailVerification;
-
+ 
 @Service
 public class EmailVerificationManager implements EmailVerificationService {
 	

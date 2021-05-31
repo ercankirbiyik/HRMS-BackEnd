@@ -1,7 +1,7 @@
 package kodlamaio.hrms.core.utilities;
 
 import java.util.Random;
-
+ 
 public class GenerateRandomCode {
 	public String create() {
 		int leftLimit = 97;

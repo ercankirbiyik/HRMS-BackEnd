@@ -10,7 +10,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import lombok.Data;
- 
+   
 @Entity
 @Data
 @Table(name="users")

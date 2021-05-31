@@ -1,7 +1,7 @@
 package kodlamaio.hrms.core.utilities.results;
 
 import lombok.Getter;
-
+ 
 @Getter
 public class DataResult<T> extends Result {
 

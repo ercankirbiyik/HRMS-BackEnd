@@ -1,5 +1,5 @@
 package kodlamaio.hrms.entities.concretes;
-
+ 
 import java.sql.Date;
 
 import javax.persistence.Column;
@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+ 
 @EqualsAndHashCode(callSuper = false)
 @Data
 @Entity

@@ -2,7 +2,7 @@ package kodlamaio.hrms.services;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
- 
+   
 public class FakeMernis {
 	public static boolean validate(String tcNo) {
 		

@@ -1,7 +1,6 @@
 package kodlamaio.hrms.business.concretes;
-
+ 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +39,7 @@ public class JobTitleManager implements JobTitleService {
 		if(jobTitleDao.findAllByTitle(title.getTitle()).stream().count() !=0) {
 			return new ErrorDataResult<JobTitle>(null, "This job position has already been added!");
 		}
-		return new SuccessDataResult<JobTitle>(this.jobTitleDao.save(title),"Jon position successfully added");
+		return new SuccessDataResult<JobTitle>(this.jobTitleDao.save(title),"Job position successfully added");
 	}
 
 	@Override

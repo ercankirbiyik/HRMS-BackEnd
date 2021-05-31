@@ -1,5 +1,5 @@
 package kodlamaio.hrms.api.controllers;
- 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +14,11 @@ import kodlamaio.hrms.entities.concretes.User;
 
 @RestController
 @RequestMapping("/api/users")
-public class UserController {
+public class UsersController {
 	private UserService userService;
 	
 	@Autowired
-	public UserController(UserService userService) {
+	public UsersController(UserService userService) {
 		super();
 		this.userService = userService;
 	}
