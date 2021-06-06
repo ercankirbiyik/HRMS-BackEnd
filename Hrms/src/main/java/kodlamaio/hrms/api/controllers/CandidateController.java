@@ -1,5 +1,5 @@
 package kodlamaio.hrms.api.controllers;
-
+ 
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,7 @@ public class CandidateController {
 		super();
 		this.candidateService = candidateService;
 	}
-	
+	 
 	@GetMapping("/getall")
 	public DataResult<List<Candidate>> getAll() {
 		return this.candidateService.getAll();

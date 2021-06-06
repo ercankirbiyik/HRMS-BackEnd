@@ -55,7 +55,7 @@ public class CandidateManager implements CandidateService {
 				isMailRegistered(candidate)
 				);
 		if(!engine.isSuccess()) {
-			return new ErrorDataResult(null,engine.getMessage());
+			return new ErrorDataResult(null, engine.getMessage());
 		}
 		
 		User savedUser = this.userService.add(candidate);
@@ -120,7 +120,7 @@ public class CandidateManager implements CandidateService {
 	}
 	
 	private Result isMailRegistered(Candidate candidate) {
-		if(candidateDao.findAllByEmail(candidate.getEmail()).stream().count() != 0) {
+		if(candidateDao.findByEmail(candidate.getEmail()).stream().count() != 0) {
 			return new ErrorResult(CallBackMessages.alreadyRegisteredMail);
 		}
 		 return new SuccessResult();
