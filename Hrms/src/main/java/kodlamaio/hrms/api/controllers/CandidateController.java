@@ -20,7 +20,7 @@ public class CandidateController {
 		super();
 		this.candidateService = candidateService;
 	}
-	
+	 
 	@GetMapping("/getall")
 	public DataResult<List<Candidate>> getAll() {
 		return this.candidateService.getAll();
